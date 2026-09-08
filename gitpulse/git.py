@@ -8,7 +8,8 @@ from pathlib import Path
 
 COMMIT_MARKER = "\x1e"
 FIELD_SEP = "\x1f"
-LOG_FORMAT = COMMIT_MARKER + FIELD_SEP.join(["%H", "%an", "%ae", "%aI", "%s"])
+# %aN / %aE honour .mailmap
+LOG_FORMAT = COMMIT_MARKER + FIELD_SEP.join(["%H", "%aN", "%aE", "%aI", "%s"])
 
 # "src/{old => new}/mod.py" or "old.py => new.py"
 _RENAME_BRACES = re.compile(r"\{([^{}]*) => ([^{}]*)\}")
