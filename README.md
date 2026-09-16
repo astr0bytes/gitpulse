@@ -20,11 +20,14 @@ Python 3.10 or later.
 python3 main.py /path/to/repo
 python3 main.py . --since "6 months ago" --top 15
 python3 main.py . --branch develop
+python3 main.py . -x '*.lock' -x 'package-lock.json' -x 'docs/*'
 python3 main.py . -f markdown -o REPORT.md
 python3 main.py . -f json | jq '.hotspots[0]'
 ```
 
 Output formats are `text` (default), `markdown` and `json`.
+
+`--exclude` takes a glob and can be repeated. A pattern without a slash also matches the file name alone, so `*.lock` covers `poetry.lock` and `frontend/yarn.lock`. Excluded files are left out of the line counts and hotspots, but the commits themselves are still counted.
 
 Hotspots are files sorted by number of commits touching them. The churn column is the sum of added and deleted lines over the period.
 

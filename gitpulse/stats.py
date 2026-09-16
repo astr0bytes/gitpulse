@@ -1,6 +1,7 @@
 """Aggregate statistics from parsed commits."""
 
 from collections import Counter, defaultdict
+from fnmatch import fnmatch
 from dataclasses import dataclass
 
 from gitpulse.git import Commit
@@ -19,6 +20,20 @@ class RepoStats:
     hotspots: list[dict]
     by_weekday: dict[str, int]
     by_hour: dict[int, int]
+
+
+def is_excluded(path: str, patterns: list[str]) -> bool:
+    name = path.rsplit("/", 1)[-1]
+    return any(fnmatch(path, p) or fnmatch(name, p) for p in patterns)
+
+
+def filter_paths(commits: list[Commit], patterns: list[str]) -> list[Commit]:
+    """Drop file changes matching one of the glob patterns (lockfiles, generated code...)."""
+    if not patterns:
+        return commits
+    for c in commits:
+        c.files = [f for f in c.files if not is_excluded(f.path, patterns)]
+    return commits
 
 
 def compute_stats(commits: list[Commit], top: int = 10) -> RepoStats:
