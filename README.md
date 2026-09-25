@@ -32,3 +32,9 @@ Output formats are `text` (default), `markdown` and `json`.
 Hotspots are files sorted by number of commits touching them. The churn column is the sum of added and deleted lines over the period.
 
 Authors are grouped using the repository `.mailmap` if there is one, so commits made with an old email or a misspelled name end up under the same person.
+
+## Tests
+
+```
+python3 -m unittest
+```
